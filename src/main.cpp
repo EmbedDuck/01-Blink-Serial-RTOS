@@ -93,6 +93,7 @@ void setup()
     // Create Tasks
     xTaskCreate(SerailTask, "SerialTask", 1024, NULL, 2, &serialTaskHandle);
     xTaskCreate(BlinkTask, "BlinkTask", 1024, NULL, 1, &blinkTaskHandle);
+    xTaskCreate(TaskStateTask,"TaskStateTask",1024,NULL,1,NULL);
 }
 
 void loop()
