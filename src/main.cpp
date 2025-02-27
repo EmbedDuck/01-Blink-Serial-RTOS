@@ -10,6 +10,45 @@ volatile int blinkDelay = 1000;
 TaskHandle_t serialTaskHandle = NULL;
 TaskHandle_t blinkTaskHandle = NULL;
 
+// Function to convert task state to human-readable format
+const char *getTaskState(eTaskState state)
+{
+    switch (state)
+    {
+    case eRunning:
+        return "Running";
+        break;
+    case eReady:
+        return "Ready";
+        break;
+    case eBlocked:
+        return "Blocked";
+        break;
+    case eSuspended:
+        return "Suspended";
+        break;
+    case eDeleted:
+        return "Deleted";
+        break;
+    default:
+        break;
+    }
+}
+// Task to print task states
+void TaskStateTask(void *pvParameters){
+    (void)pvParameters;
+    while (1)
+    {
+       Serial.println("Task states: ");
+       Serial.print("Serial Task: ");
+       Serial.println(getTaskState(eTaskGetState(serialTaskHandle)));
+       Serial.print("Blink Task: ");
+       Serial.println(getTaskState(eTaskGetState(blinkTaskHandle)));
+       Serial.println("-------------------");
+       vTaskDelay(pdMS_TO_TICKS(2000)); 
+    }
+    
+}
 // Task to read input from serial terminal
 void SerailTask(void *pvParameters)
 {
@@ -59,39 +98,3 @@ void setup()
 void loop()
 {
 }
-
-// // Function to convert task state to human-readable format
-// const char *getTaskState(eTaskState state)
-// {
-//   switch (state)
-//   {
-//   case eRunning:
-//     return "Running";
-//   case eReady:
-//     return "Ready";
-//   case eBlocked:
-//     return "Blocked";
-//   case eSuspended:
-//     return "Suspended";
-//   case eDeleted:
-//     return "Deleted";
-//   default:
-//     return "Unknown";
-//   }
-// }
-// // Task to print task states
-// void TaskStateTask(void *pvParameters)
-// {
-//   (void)pvParameters;
-
-//   while (1)
-//   {
-//     Serial.println("Task states:");
-//     Serial.print("Serial Task: ");
-//     Serial.println(getTaskState(eTaskGetState(serialTaskHandle)));
-//     Serial.print("Blink Task: ");
-//     Serial.println(getTaskState(eTaskGetState(blinkTaskHandle)));
-//     Serial.println("--------------------");
-//     vTaskDelay(pdMS_TO_TICKS(2000)); // Update every 2 seconds
-//   }
-// }
